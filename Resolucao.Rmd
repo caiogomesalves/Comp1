@@ -4,8 +4,9 @@ author: "Caio Gomes Alves"
 date: "14/11/2022"
 output: 
   prettydoc::html_pretty:
-    theme: architect
+    theme: cayman
     highlight: github
+    toc: TRUE
 ---
 
 ```{r setup, include=FALSE}
@@ -13,7 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 # 1 - Aritmética
-## 1.1 - Calculando Expressões no R
+## 1.1 - Calculando expressões no R
 
 * $\frac{32}{2}+4$
 ```{r}
@@ -229,7 +230,7 @@ h.
 rep(10:7,5:2)
 ```
 
-## 2.4 Manipulação de vetores
+## 2.4 - Manipulação de vetores
 
 ### 2.4.1 - Usando dois vetores
 
@@ -267,5 +268,90 @@ min(PIB)
 # Para encontrar a quais estados esses valores correspondem, iremos indexar de maneira cruzada:
 Estado[which.max(PIB)]
 Estado[which.min(PIB)]
+```
+
+d. 
+
+```{r}
+# De maneira similar ao item anterior, vamos primeiro encontrar as posições e depois os estados:
+which(PIB>40000)
+
+PIB[PIB>40000]
+
+Estado[which(PIB>40000)]
+
+# Agora, para encontrar o valor mediano desses estados, podemos utilizar median() somente sobre os valores filtrados:
+median(PIB[PIB>40000])
+```
+
+e. 
+
+```{r}
+# Para encontrarmos a proporção, vamos dividir o tamanho de um vetor filtrado pelo original:
+length(PIB[PIB<42000]) / length(PIB)
+
+# Agora vamos encontrar os estados correspondentes:
+Estado[which(PIB<42000)]
+
+# Calculamos agora a média de maneira similar ao item anterior:
+mean(PIB[PIB<42000])
+```
+
+f. 
+
+```{r}
+# Podemos fazer a comparação com uma função no filtro:
+PIB[PIB>mean(PIB)]
+
+# Agora para encontrar os estados:
+Estado[which(PIB>mean(PIB))]
+```
+
+g. 
+
+```{r}
+# Para reordenar os estados, vamos usar a função order(), que coloca vetores de strings (texto) em ordem alfabética:
+order(Estado)
+
+# Agora que temos a ordem alfabética dos estados, podemos indexar os dois:
+Estado[order(Estado)]
+
+# Para os valores usamos o mesmo método anteriormente, ainda com relação aos estados:
+PIB[order(Estado)]
+```
+
+h. 
+
+```{r}
+# A função order() aplicada a vetores numéricos retorna a ordem crescente:
+order(PIB)
+
+# Para retornar de maneira decrescente, usamos o argumento decreasing = TRUE:
+order(PIB, decreasing = TRUE)
+
+# Agora ordenamos os vetores como no exemplo anterior:
+PIB[order(PIB, decreasing = TRUE)]
+Estado[order(PIB, decreasing = TRUE)]
+```
+
+### 2.4.2 - Usando um vetor nomeado
+
+Para criarmos um vetor nomeado, temos dois métodos: adicionar nomes a um vetor ou nomear o vetor na criação:
+
+```{r}
+# Vamos começar com a nomeação interna:
+(PIB2 <- c(RS = 42406, SC = 45118, PR = 40788, SP = 51140, MG = 30794, RJ = 45174, ES = 34177))
+
+# Outra maneira é definindo o argumento extermo names() do vetor:
+PIB3 <- PIB
+names(PIB3) <- Estado
+PIB3
+```
+
+Como agora temos um vetor que possui nomes para os seus elementos, a maioria dos exercícios anteriores é feita de maneira direta. Mas vale lembrar que os valores desse vetor são os do PIB *per Capita*, e que todas as operações serão feitas com eles. A título de exemplo, faremos os exercícios **f** e **g**:
+
+```{r}
+# f:
+PIB2[which(PIB2>mean(PIB2))]
 ```
 
