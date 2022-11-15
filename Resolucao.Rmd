@@ -1,0 +1,271 @@
+---
+title: "Resolução Lista de Exercícios 1"
+author: "Caio Gomes Alves"
+date: "14/11/2022"
+output: 
+  prettydoc::html_pretty:
+    theme: architect
+    highlight: github
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# 1 - Aritmética
+## 1.1 - Calculando Expressões no R
+
+* $\frac{32}{2}+4$
+```{r}
+(32/2) + 4
+```
+
+* $3^2 \cdot 5+2$
+```{r}
+((3^2)*5)+2
+```
+
+* $2+5 \cdot 3^2$
+```{r}
+2 + (5*(3^2))
+```
+
+* $\frac{39-4^2}{5}$
+```{r}
+(39-(4^2))/5
+```
+
+* $\frac{39-4^2}{5\cdot6}$
+```{r}
+(39-(4^2))/(5*6)
+```
+
+* $\frac{39-4^2}{5}\cdot 6$
+```{r}
+((39-(4^2))/5)*6
+```
+
+* $1-\frac{20}{20}\frac{19}{20}\frac{18}{20}\frac{17}{20}\frac{16}{20}$
+```{r}
+# Temos diversas maneiras de fazer essa conta.
+# Deixarei dois exemplos:
+1-((20/20)*(19/20)*(18/20)*(17/20)*(16/20))
+1-(prod(16:20)/(20^5))
+```
+
+* $\frac{e^{-2}-2^3}{3!}$
+```{r}
+(exp(-2)-(2^3))/factorial(3)
+```
+
+* $5 + \log_{2}8$
+```{r}
+5+log2(8)
+```
+
+* $3 \cdot \log_{10}1000$
+```{r}
+3*log10(1000)
+```
+
+* $-2 \cdot \log_{e}4$
+```{r}
+-2*log(4)
+```
+
+* $\log_{5}80$
+```{r}
+# Temos duas maneiras de fazer isso:
+log(80, base = 5)
+(log(80))/(log(5))
+```
+
+# 2 - Vetores
+
+## 2.1 - Criação de vetores
+
+```{r}
+a <- c(12,14,16,11,12,18,15,12,15)
+b <- c(3,7,11,15,19,23)
+c <- c(1,2,4,7,11,16,22,29,37,46,56,67)
+
+# Alternativamente, podemos utilizar as seguintes leis de formação para b e c:
+(b <- seq(from = 3, to = 23, by = 4))
+
+
+c <- numeric(12)
+c[1] <- 1
+for(i in 2:12){
+  c[i] <- c[i-1]+(i-1)
+}
+c
+```
+
+## 2.2 - Análise de vetores
+
+a. Valores únicos em **a**:
+
+```{r}
+# A função unique retorna os valores em um vetor, eliminando valores repetidos:
+unique(a)
+
+# Para descobrirmos quantos valores únicos a tem, vemos o tamanho de unique(a):
+length(unique(a))
+```
+
+b. Valores em **a** maiores que 13:
+
+```{r}
+# Temos várias maneiras de fazer isso:
+
+# A função which() nos retorna a posição dos valores que obedecem a comparação:
+which(a>13)
+
+# Com isso, podemos indezar os valores dentro de colchetes []:
+a[which(a>13)]
+
+# Como a comparação é simples, podemos nos livrar do which(), sem perda de generalidade:
+a[a>13]
+```
+
+c. Soma de **b** e **c**:
+
+```{r}
+b+c
+```
+
+d. Valores de **a** divisíveis por 3:
+
+```{r}
+# Para verificar se um número é divisível por outro, o resto da divisão deve ser 0.
+# Com a divisão inteira, o resultado retornado é o resto da divisão:
+a%%3
+
+# Agora usamos a comparação lógica de igualdade == para encontrar os valores que são divisiveis por 3:
+a[a%%3 == 0]
+
+# E para saber quantos são, somamos os valores em que essa comparação é verdadeira:
+sum(a%%3==0)
+```
+
+e. Quantas vezes cada valor de **a** aparece:
+
+```{r}
+# Para retornar esse resultado, usamos a função table()
+# Que nos apresenta uma tabela de frequência de um dadd vetor:
+table(a)
+```
+
+f. Valor mais frequente de **a**:
+
+```{r}
+# Usaremos a função which.max para isso:
+which.max(table(a))
+
+# Percebe-se o problema, pois é retornado o número 12
+# Que é o valor que mais aparece, mas com o número 2 abaixo
+# Que não é a quantidade de vezes que ele aparece, mas sim a posição do 12.
+# Para encontrar o valor que mais aparece e quantas vezes, vamos indexar o vetor:
+table(a)[which.max(table(a))]
+```
+
+## 2.3 - Criação de vetores por sequências
+
+a.
+
+```{r}
+# Usaremos o argumento each para especificar quantas vezes cada elemento será repetido
+rep(c(1,2,3,4,5), each = 3)
+```
+
+b.
+
+```{r}
+# Usaremos o argumento times para especificar quantas vezes o vetor (inteiro) será repetido
+rep(c(1,2,3),times = 5)
+```
+
+c. 
+
+```{r}
+# Podemos repetir um vetor criado por outra função, como o seq(), que cria uma sequência
+rep(seq(1:10),times = 2)
+```
+
+d. 
+
+```{r}
+# Na função seq podemos especificar o começo (from), o final (to) e o tamanho de cada "passo" (by)
+seq(from = 0.5, to = 7.5, by = 1)
+```
+
+e. 
+
+```{r}
+# Para valores inteiros, ao invés de usar a função seq, podemos usar : para criar a sequência:
+-3:3
+```
+
+f. 
+
+```{r}
+# Se quisermos repetir cada um dos valores uma quantidade de vezes diferente
+# Precisaremos colocar dois vetores: o primeiro é o vetor a ser repetido
+# E o segundo deve conter quantas vezes cada elemento será repetido (em ordem)
+rep(c(10,15,13),c(2,5,3))
+```
+
+g. 
+
+```{r}
+# Usaremos o mesmo princípio do item anterior, mas usaremos uma sequência ao invés de vetores feitos à mão:
+rep(1:5,1:5)
+```
+
+h.
+
+```{r}
+# Podemos usar a função seq (ou :) tanto de maneira crescente, quanto decrescente:
+rep(10:7,5:2)
+```
+
+## 2.4 Manipulação de vetores
+
+### 2.4.1 - Usando dois vetores
+
+a. 
+
+```{r}
+Estado <- c("RS","SC","PR","SP","MG","RJ","ES")
+PIB <- c(42406,45118,40788,51140,30794,45174,34177)
+```
+
+b. 
+
+```{r}
+# Média
+mean(PIB)
+
+# Mediana
+median(PIB)
+
+# Desvio-Padrão
+sd(PIB)
+
+# Coeficiente de Variação
+sd(PIB)/mean(PIB)
+
+```
+
+c. 
+
+```{r}
+# Para encontrar os valores máximo e mínimo, usamos a função max() e min():
+max(PIB)
+min(PIB)
+
+# Para encontrar a quais estados esses valores correspondem, iremos indexar de maneira cruzada:
+Estado[which.max(PIB)]
+Estado[which.min(PIB)]
+```
+
